@@ -9,7 +9,7 @@
     </p>
     <p class="thinking rise" style="--d:0.6s">
       <span class="thinking-label">Thinking about</span>
-      <span class="cycler" data-cycler aria-live="off">genes</span>
+      <span class="cycler" aria-hidden="true"><span class="reel" data-reel><span>genes</span><span>grammar</span><span>gods</span><span>games</span><span>memory</span><span>migration</span><span>myth</span><span>meaning</span><span>genes</span></span></span><span class="sr-only">genes, grammar, gods, games, memory, migration, myth, meaning</span>
     </p>
   </div>
 </section>
@@ -102,21 +102,25 @@
 
   .cycler {
     display: inline-block;
-    min-width: 6.5em;
+    height: 1.7em;
+    min-width: 8.5em;
+    overflow: hidden;
+    vertical-align: bottom;
     text-align: left;
     color: var(--color-gold);
-    transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 28%, #000 72%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0, #000 28%, #000 72%, transparent 100%);
   }
 
-  :global(.cycler.out) {
-    opacity: 0;
-    transform: translateY(-14px);
-  }
+  .reel { display: block; will-change: transform; }
+  .reel span { display: block; height: 1.7em; line-height: 1.7em; }
 
-  :global(.cycler.pre) {
-    transition: none;
-    opacity: 0;
-    transform: translateY(14px);
+  .sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
   }
 
   .subtitle-break { display: none; }
@@ -137,20 +141,22 @@
 </style>
 
 <script>
-  const el = document.querySelector<HTMLElement>('[data-cycler]');
-  const words = ['genes', 'grammar', 'gods', 'games', 'memory', 'migration', 'myth', 'meaning'];
-  if (el) {
+  const reel = document.querySelector<HTMLElement>('[data-reel]');
+  if (reel) {
+    const total = reel.children.length - 1; // last word repeats the first, so the loop is seamless
     let i = 0;
-    setInterval(() => {
-      el.classList.add('out');
-      setTimeout(() => {
-        i = (i + 1) % words.length;
-        el.textContent = words[i];
-        el.classList.add('pre');
-        el.classList.remove('out');
-        void el.offsetWidth;
-        el.classList.remove('pre');
-      }, 900);
-    }, 3600);
+    const step = () => {
+      i += 1;
+      reel.style.transition = 'transform 0.75s cubic-bezier(0.65, 0, 0.2, 1)';
+      reel.style.transform = `translateY(-${i * 1.7}em)`;
+      if (i === total) {
+        setTimeout(() => {
+          reel.style.transition = 'none';
+          reel.style.transform = 'translateY(0)';
+          i = 0;
+        }, 800);
+      }
+    };
+    setInterval(step, 2200);
   }
 </script>

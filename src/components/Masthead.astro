@@ -127,13 +127,15 @@
     .wordmark {
       animation: none;
     }
+    .cycler { transition: opacity 0.3s ease; }
+    :global(.cycler.out) { transform: none; }
   }
 </style>
 
 <script>
   const el = document.querySelector<HTMLElement>('[data-cycler]');
   const words = ['genes', 'grammar', 'gods', 'games', 'memory', 'migration', 'myth', 'meaning'];
-  if (el && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (el) {
     let i = 0;
     setInterval(() => {
       el.classList.add('out');

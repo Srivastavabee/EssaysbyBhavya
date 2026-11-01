@@ -1,0 +1,6 @@
+node_modules
+dist
+.astro
+.astro_old_*
+.DS_Store
+_removed

@@ -1,0 +1,97 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="About"
+  description="About B's Journal — a space for essays on biology, literature, religion, culture, and the human spirit."
+>
+  <article class="about">
+    <header class="container about-header">
+      <h1 class="about-title">About</h1>
+    </header>
+
+    <div class="container about-layout">
+      <div class="about-content">
+        <p>
+          My name is Bhavya. For a while, my days were measured in roadmaps and sprint cycles —
+          the language of product management, where everything is built to be shipped. I have
+          since left that world for teaching, though I suspect I never really left the habit of
+          asking why something works. Biology was where that habit began. It is still the ground
+          I stand on: the discipline that taught me a body is a story told in cells, that a life
+          is, before anything else, a system trying to persist.
+        </p>
+        <p>
+          But systems alone never satisfied me. Somewhere in the reading that followed —
+          literature, culture, the long unspooling of history — I began to see how deeply the
+          human mind is not just a product of biology, but a shaper of it in return: of the
+          cultures we build, the beliefs we inherit, the wars we wage and the peace we
+          occasionally manage to keep. Mechanism gave me the how. Everything else, slowly, began
+          to give me the why. This journal is my attempt to hold both at once, without asking
+          either to explain away the other.
+        </p>
+        <p>
+          Away from the writing desk, I am — perhaps unexpectedly — a gamer, which has taught me
+          more about systems, story, and the strange logic of human choice than I expected it to.
+          I started this journal because the world does not slow down long enough for most of us
+          to sit with a question, and I wanted a place to do exactly that: to think in public,
+          imperfectly, about what is changing and what, underneath all of it, remains. If there
+          is one question this whole studio circles back to, it is this — what made us human, and
+          what will it take to stay that way.
+        </p>
+
+      </div>
+
+      <div class="about-photo">
+        <img src="/bhavya-photo.jpg" alt="Portrait of Bhavya" />
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .about-header {
+    padding-top: 3rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .about-title {
+    font-size: clamp(2.25rem, 5vw, 3.25rem);
+  }
+
+  .about-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    padding-bottom: 5rem;
+    align-items: start;
+  }
+
+  .about-content {
+    max-width: var(--measure);
+  }
+
+  .about-content p {
+    font-size: 1.0625rem;
+    line-height: 1.85;
+    color: var(--color-text-secondary);
+  }
+
+  .about-photo img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border: 1px solid var(--color-rule);
+  }
+
+  @media (min-width: 900px) {
+    .about-layout {
+      grid-template-columns: 1.4fr 1fr;
+    }
+
+    .about-photo {
+      max-width: 340px;
+      justify-self: end;
+    }
+  }
+</style>

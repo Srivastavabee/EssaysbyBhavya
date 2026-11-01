@@ -1,0 +1,70 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EssayList from '../../components/EssayList.astro';
+import { subjects, subjectSlugFromTag } from '../../lib/subjects';
+
+export async function getStaticPaths() {
+  return subjects.map((subject) => ({
+    params: { slug: subject.slug },
+    props: { subject },
+  }));
+}
+
+const { subject } = Astro.props;
+
+const allEssays = await getCollection('essays', ({ data }) => !data.draft);
+const essays = allEssays
+  .filter((essay) => essay.data.tags.some((tag) => subjectSlugFromTag(tag) === subject.slug))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout
+  title={subject.name}
+  description={`Essays on ${subject.name.toLowerCase()} — ${subject.descriptor.toLowerCase()}`}
+>
+  <header class="subject-header">
+    <div class="container">
+      <p class="eyebrow">The Study</p>
+      <h1 class="subject-title">{subject.name}</h1>
+      <p class="subject-descriptor">{subject.descriptor}</p>
+    </div>
+  </header>
+
+  <section class="container">
+    {essays.length > 0 ? (
+      <EssayList essays={essays} />
+    ) : (
+      <p class="empty">No essays have been gathered under this subject yet.</p>
+    )}
+  </section>
+</BaseLayout>
+
+<style>
+  .subject-header {
+    padding-top: 3rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .subject-title {
+    font-size: clamp(2.25rem, 5vw, 3.25rem);
+    margin: 0.75rem 0 1rem;
+  }
+
+  .subject-descriptor {
+    font-family: var(--font-body);
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--color-text-secondary);
+    margin: 0;
+  }
+
+  .empty {
+    font-family: var(--font-body);
+    font-style: italic;
+    color: var(--color-muted);
+    padding: 2rem 0 4rem;
+    border-top: 1px solid var(--color-rule);
+    margin-top: 1rem;
+  }
+</style>

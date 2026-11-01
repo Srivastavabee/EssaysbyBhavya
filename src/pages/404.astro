@@ -1,0 +1,66 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Page Not Found" description="This page could not be found.">
+  <section class="not-found">
+    <div class="container not-found-inner">
+      <p class="eyebrow">Error</p>
+      <h1 class="not-found-title">A Page Uncatalogued</h1>
+      <div class="ornament" role="presentation">
+        <span class="ornament-mark">&#9670;</span>
+      </div>
+      <p class="not-found-text">
+        The page you are looking for has been misfiled, retired, or never existed at all.
+      </p>
+      <a href="/" class="not-found-link">Return to the Studio <span aria-hidden="true">&rarr;</span></a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .not-found {
+    padding: 7rem 0 8rem;
+  }
+
+  .not-found-inner {
+    max-width: 32rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .not-found-title {
+    font-size: clamp(2rem, 5vw, 2.75rem);
+    margin: 1rem 0;
+  }
+
+  .ornament {
+    margin: 1.25rem 0 1.75rem;
+  }
+
+  .not-found-text {
+    font-family: var(--font-body);
+    font-style: italic;
+    color: var(--color-text-secondary);
+    font-size: 1.1rem;
+    margin: 0 0 2.25rem;
+  }
+
+  .not-found-link {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--color-accent);
+    border-bottom: 1px solid var(--color-rule);
+    padding-bottom: 0.3rem;
+  }
+
+  .not-found-link:hover,
+  .not-found-link:focus-visible {
+    border-color: var(--color-accent);
+  }
+</style>

@@ -1,0 +1,101 @@
+---
+const path = Astro.url.pathname;
+const isHome = path === '/';
+const isEssays = path.startsWith('/essays') || path.startsWith('/subjects');
+const isAbout = path.startsWith('/about');
+const isCoffee = path.startsWith('/coffee');
+---
+
+<header class="site-header">
+  <div class="container header-inner">
+    <nav aria-label="Primary">
+      <ul>
+        <li>
+          <a href="/" aria-current={isHome ? 'page' : undefined}>Home</a>
+        </li>
+        <li aria-hidden="true" class="sep">·</li>
+        <li>
+          <a href="/essays" aria-current={isEssays ? 'page' : undefined}>Essays</a>
+        </li>
+        <li aria-hidden="true" class="sep">·</li>
+        <li>
+          <a href="/about" aria-current={isAbout ? 'page' : undefined}>About</a>
+        </li>
+        <li aria-hidden="true" class="sep">·</li>
+        <li>
+          <a href="/coffee" aria-current={isCoffee ? 'page' : undefined}>Coffee?</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    padding: 1.75rem 0 0;
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  nav ul {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  nav li {
+    margin: 0;
+    padding: 0;
+  }
+
+  nav a {
+    position: relative;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--color-text-secondary);
+    padding: 0.35rem 0;
+    transition: color 0.3s ease;
+  }
+
+  nav a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: var(--color-gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.35s ease;
+  }
+
+  nav a:hover,
+  nav a:focus-visible,
+  nav a[aria-current='page'] {
+    color: var(--color-text);
+  }
+
+  nav a:hover::after,
+  nav a:focus-visible::after,
+  nav a[aria-current='page']::after {
+    transform: scaleX(1);
+  }
+
+  .sep {
+    color: var(--color-rule);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    user-select: none;
+  }
+</style>

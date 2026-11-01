@@ -1,0 +1,61 @@
+---
+import { getCollection } from 'astro:content';
+
+const essays = await getCollection('essays', ({ data }) => !data.draft);
+const byYear = new Map<number, number>();
+for (const e of essays) {
+  const y = e.data.date.getUTCFullYear();
+  byYear.set(y, (byYear.get(y) ?? 0) + 1);
+}
+const years = [...byYear.entries()].sort((a, b) => b[0] - a[0]);
+---
+
+<ul class="years" data-reveal>
+  {years.map(([year, n]) => (
+    <li>
+      <a href={`/years/${year}`} class="year-link">
+        <span class="year">{year}</span>
+        <span class="year-count">{n} {n === 1 ? 'essay' : 'essays'}</span>
+      </a>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .years {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2.5rem 3.5rem;
+  }
+
+  .year-link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    text-decoration: none;
+  }
+
+  .year {
+    font-family: var(--font-display);
+    font-size: 2.4rem;
+    line-height: 1;
+    color: var(--color-text);
+    transition: color 0.3s ease;
+  }
+
+  .year-count {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+
+  .year-link:hover .year,
+  .year-link:focus-visible .year {
+    color: var(--color-gold);
+  }
+</style>

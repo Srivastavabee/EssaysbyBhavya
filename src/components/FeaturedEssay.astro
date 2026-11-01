@@ -1,0 +1,95 @@
+---
+import { formatEditorialDate } from '../lib/date';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  essay: CollectionEntry<'essays'>;
+}
+
+const { essay } = Astro.props;
+---
+
+<section class="featured" aria-labelledby="featured-heading" data-reveal>
+  <div class="container featured-inner">
+    <p class="eyebrow">Current Read</p>
+    <h2 id="featured-heading" class="featured-title">{essay.data.title}</h2>
+    <div class="ornament" role="presentation">
+      <span class="ornament-mark">&#9670;</span>
+    </div>
+    <p class="featured-excerpt">{essay.data.excerpt}</p>
+    <p class="featured-meta">
+      <time datetime={essay.data.date.toISOString()}>{formatEditorialDate(essay.data.date)}</time>
+      {essay.data.tags.length > 0 && <span> / {essay.data.tags.join(' · ')}</span>}
+    </p>
+    <a href={`/essays/${essay.id}`} class="featured-link">Read the essay <span aria-hidden="true">&rarr;</span></a>
+  </div>
+</section>
+
+<style>
+  .featured {
+    padding: 2rem 0 5rem;
+  }
+
+  .featured-inner {
+    max-width: 42rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .eyebrow {
+    margin-bottom: 1.25rem;
+  }
+
+  .featured-title {
+    font-size: clamp(1.9rem, 5vw, 2.9rem);
+    color: var(--color-text);
+  }
+
+  .ornament {
+    margin: 1.5rem 0;
+  }
+
+  .featured-excerpt {
+    font-size: 1.15rem;
+    line-height: 1.75;
+    color: var(--color-text-secondary);
+    margin: 0 0 1.75rem;
+  }
+
+  .featured-meta {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin: 0 0 2.25rem;
+  }
+
+  .featured-link {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--color-accent);
+    border-bottom: 1px solid var(--color-rule);
+    padding-bottom: 0.3rem;
+    transition: border-color 0.2s ease;
+  }
+
+  .featured-link:hover,
+  .featured-link:focus-visible {
+    border-color: var(--color-accent);
+  }
+
+  .featured-link span {
+    display: inline-block;
+    transition: transform 0.2s ease;
+  }
+
+  .featured-link:hover span {
+    transform: translateX(0.2rem);
+  }
+</style>

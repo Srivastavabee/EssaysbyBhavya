@@ -1,0 +1,91 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Masthead from '../components/Masthead.astro';
+import FeaturedEssay from '../components/FeaturedEssay.astro';
+import EssayList from '../components/EssayList.astro';
+import SubjectIndex from '../components/SubjectIndex.astro';
+import YearArchive from '../components/YearArchive.astro';
+
+const allEssays = (await getCollection('essays', ({ data }) => !data.draft)).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+const [featured, ...rest] = allEssays;
+const selected = rest.slice(0, 4);
+
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: "B's Journal",
+  description: "Essays on biology, literature, and the cultural architecture of the human spirit.",
+  url: Astro.site?.toString(),
+};
+---
+
+<BaseLayout title="B's Journal" structuredData={websiteSchema}>
+  <Masthead />
+
+  {featured && <FeaturedEssay essay={featured} />}
+
+  <section class="section" aria-labelledby="selected-heading">
+    <div class="container">
+      <h2 id="selected-heading" class="section-heading">Selected Essays</h2>
+      <EssayList essays={selected} startIndex={1} />
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="study-heading">
+    <div class="container">
+      <h2 id="study-heading" class="section-heading">The Study</h2>
+      <p class="section-lede">A subject index for the essays gathered here.</p>
+    </div>
+    <SubjectIndex />
+  </section>
+
+  <section class="section" aria-labelledby="years-heading">
+    <div class="container">
+      <h2 id="years-heading" class="section-heading">Archive by Year</h2>
+      <p class="section-lede">Every essay, in the order it was written.</p>
+      <YearArchive />
+    </div>
+  </section>
+
+  <section class="ending" aria-hidden="true">
+    <div class="container">
+      <span class="ending-mark">&#9670;</span>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .section {
+    padding: 3.5rem 0;
+  }
+
+  .section-heading {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin-bottom: 0.5rem;
+  }
+
+  .section-lede {
+    font-family: var(--font-body);
+    font-style: italic;
+    color: var(--color-text-secondary);
+    margin-bottom: 2.5rem;
+  }
+
+  .ending {
+    padding: 3rem 0 5rem;
+    text-align: center;
+  }
+
+  .ending-mark {
+    color: var(--color-rule);
+    font-size: 0.75rem;
+  }
+</style>

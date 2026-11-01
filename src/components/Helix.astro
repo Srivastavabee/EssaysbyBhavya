@@ -1,0 +1,83 @@
+---
+// One slim double helix that runs the full height of the viewport along the
+// left edge on wide screens. It slowly turns, and twists further as you scroll.
+---
+<canvas class="helix-rail" data-helix-rail aria-hidden="true"></canvas>
+
+<style>
+  .helix-rail {
+    position: fixed;
+    top: 0;
+    right: clamp(0.5rem, 2.2vw, 2.5rem);
+    width: 54px;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+    display: none;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 14%, #000 86%, transparent 100%);
+    mask-image: linear-gradient(to bottom, transparent 0, #000 14%, #000 86%, transparent 100%);
+  }
+  @media (min-width: 1240px) {
+    .helix-rail { display: block; }
+  }
+</style>
+
+<script>
+  const cv = document.querySelector<HTMLCanvasElement>('[data-helix-rail]');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (cv) {
+    const ctx = cv.getContext('2d')!;
+    let W = 54, H = 0, dpr = 1;
+    const size = () => {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      H = window.innerHeight;
+      cv.width = W * dpr; cv.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    size();
+    window.addEventListener('resize', size);
+
+    const GOLD = '201,166,107', LAV = '183,166,200';
+    const A = 17, K = 0.021, CX = W / 2;
+
+    const draw = (t: number) => {
+      ctx.clearRect(0, 0, W, H);
+      const ph = t * 0.00055 + window.scrollY * 0.0042;
+
+      // rungs
+      for (let y = 10; y < H; y += 24) {
+        const s = Math.sin(y * K + ph), c = Math.cos(y * K + ph);
+        const x1 = CX + A * s, x2 = CX - A * s;
+        ctx.strokeStyle = `rgba(141,131,148,${0.1 + 0.22 * Math.abs(c)})`;
+        ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(x1, y); ctx.lineTo(x2, y); ctx.stroke();
+        ctx.fillStyle = `rgba(${GOLD},${0.35 + 0.4 * c})`;
+        ctx.beginPath(); ctx.arc(x1, y, 1.6 + 0.9 * c, 0, 6.2832); ctx.fill();
+        ctx.fillStyle = `rgba(${LAV},${0.35 - 0.4 * c + 0.4})`;
+        ctx.beginPath(); ctx.arc(x2, y, 1.6 - 0.9 * c + 0.9, 0, 6.2832); ctx.fill();
+      }
+
+      // the two strands, drawn in short segments so the near side is brighter
+      for (const [col, sign] of [[GOLD, 1], [LAV, -1]] as const) {
+        for (let y = 0; y < H; y += 3) {
+          const a0 = y * K + ph, a1 = (y + 3) * K + ph;
+          const depth = sign * Math.cos(a0);
+          ctx.strokeStyle = `rgba(${col},${0.22 + 0.4 * (depth * 0.5 + 0.5)})`;
+          ctx.lineWidth = 1 + 0.5 * (depth * 0.5 + 0.5);
+          ctx.beginPath();
+          ctx.moveTo(CX + sign * A * Math.sin(a0), y);
+          ctx.lineTo(CX + sign * A * Math.sin(a1), y + 3);
+          ctx.stroke();
+        }
+      }
+    };
+
+    if (reduce) {
+      draw(0);
+      window.addEventListener('scroll', () => draw(0), { passive: true });
+    } else {
+      const loop = (t: number) => { draw(t); requestAnimationFrame(loop); };
+      requestAnimationFrame(loop);
+    }
+  }
+</script>

@@ -1,0 +1,52 @@
+---
+import { plates } from '../lib/plates';
+const shown = plates.slice(0, 3);
+---
+
+<ul class="strip">
+  {shown.map((p, i) => (
+    <li data-reveal style={`--d:${i * 0.1}s`}>
+      <a href="/plates" class="plate">
+        <span class="frame"><img src={p.src} alt={p.alt} loading="lazy" /></span>
+        <span class="plate-no">Plate {['I','II','III'][i]}</span>
+        <span class="plate-title">{p.title}</span>
+      </a>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .strip {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 2.5rem;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 760px) { .strip { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1000px) { .strip { grid-template-columns: repeat(3, 1fr); } }
+
+  .plate { display: flex; flex-direction: column; gap: 0.5rem; text-decoration: none; }
+
+  .frame {
+    display: block;
+    border: 1px solid var(--color-rule);
+    padding: 0.6rem;
+    overflow: hidden;
+    transition: border-color 0.3s ease;
+  }
+  .frame img { width: 100%; height: auto; transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .plate:hover .frame, .plate:focus-visible .frame { border-color: var(--color-gold); }
+  .plate:hover .frame img { transform: scale(1.03); }
+
+  .plate-no {
+    margin-top: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+  .plate-title { font-family: var(--font-display); font-size: 1.2rem; color: var(--color-text); }
+</style>

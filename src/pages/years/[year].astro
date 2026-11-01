@@ -1,0 +1,36 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import EssayList from '../../components/EssayList.astro';
+
+export async function getStaticPaths() {
+  const all = await getCollection('essays', ({ data }) => !data.draft);
+  const years = [...new Set(all.map((e) => e.data.date.getUTCFullYear()))];
+  return years.map((year) => ({
+    params: { year: String(year) },
+    props: {
+      year,
+      essays: all
+        .filter((e) => e.data.date.getUTCFullYear() === year)
+        .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()),
+    },
+  }));
+}
+
+const { year, essays } = Astro.props;
+---
+
+<BaseLayout title={String(year)} description={`Essays written in ${year}.`}>
+  <header class="head">
+    <div class="container">
+      <p class="eyebrow">Archive</p>
+      <h1 class="title">{year}</h1>
+    </div>
+  </header>
+  <section class="container"><EssayList essays={essays} /></section>
+</BaseLayout>
+
+<style>
+  .head { padding-top: 3rem; padding-bottom: 2.5rem; }
+  .title { font-size: clamp(2.25rem, 5vw, 3.25rem); margin-top: 0.75rem; }
+</style>

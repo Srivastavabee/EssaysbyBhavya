@@ -1,0 +1,147 @@
+<section class="masthead">
+  <div class="container masthead-inner">
+    <p class="kicker rise" style="--d:0.05s">Journal</p>
+    <h1 class="wordmark rise" style="--d:0.2s">B's</h1>
+    <p class="subtitle rise" style="--d:0.4s">
+      Essays on biology, literature, <br class="subtitle-break" />
+      and the cultural architecture <br class="subtitle-break" />
+      of the human spirit.
+    </p>
+    <p class="thinking rise" style="--d:0.6s">
+      <span class="thinking-label">Thinking about</span>
+      <span class="cycler" data-cycler aria-live="off">genes</span>
+    </p>
+  </div>
+</section>
+
+<style>
+  .masthead {
+    position: relative;
+    overflow: hidden;
+    padding: 5rem 0 4.5rem;
+  }
+
+  .masthead-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.5rem;
+  }
+
+  .rise {
+    animation: rise 1s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+    animation-delay: var(--d, 0s);
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .kicker {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin: 0;
+  }
+
+  .wordmark {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(4.5rem, 14vw, 8rem);
+    line-height: 1;
+    margin: 0.25rem 0 0.5rem;
+    color: var(--color-text);
+    background: linear-gradient(
+      100deg,
+      #e6e1e8 0%,
+      #e6e1e8 38%,
+      #f0dcae 48%,
+      #c9a66b 54%,
+      #e6e1e8 64%,
+      #e6e1e8 100%
+    );
+    background-size: 260% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: rise 1s cubic-bezier(0.2, 0.7, 0.2, 1) 0.2s both, sheen 9s ease-in-out 1.4s infinite;
+  }
+
+  @keyframes sheen {
+    0% { background-position: 110% 0; }
+    55%, 100% { background-position: -15% 0; }
+  }
+
+  .subtitle {
+    font-family: var(--font-body);
+    font-style: italic;
+    font-size: clamp(1.05rem, 2.4vw, 1.25rem);
+    line-height: 1.65;
+    color: var(--color-text-secondary);
+    max-width: 30rem;
+    margin: 0;
+  }
+
+  .thinking {
+    margin: 0.5rem 0 0;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    display: flex;
+    gap: 0.75rem;
+    align-items: baseline;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .cycler {
+    display: inline-block;
+    min-width: 6.5em;
+    text-align: left;
+    color: var(--color-gold);
+    transition: opacity 0.45s ease, transform 0.45s ease;
+  }
+
+  :global(.cycler.out) {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  .subtitle-break { display: none; }
+
+  @media (min-width: 560px) {
+    .subtitle-break { display: inline; }
+  }
+
+  @media (min-width: 768px) {
+    .masthead { padding: 7rem 0 5.5rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wordmark {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  const el = document.querySelector<HTMLElement>('[data-cycler]');
+  const words = ['genes', 'grammar', 'gods', 'games', 'memory', 'migration', 'myth', 'meaning'];
+  if (el && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let i = 0;
+    setInterval(() => {
+      el.classList.add('out');
+      setTimeout(() => {
+        i = (i + 1) % words.length;
+        el.textContent = words[i];
+        el.classList.remove('out');
+      }, 450);
+    }, 2600);
+  }
+</script>

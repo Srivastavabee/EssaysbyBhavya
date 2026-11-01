@@ -1,0 +1,237 @@
+---
+interface Lens {
+  ref: string;
+  sanskrit: string;
+  translit: string;
+  translation: string;
+  modernTitle: string;
+  modern: string;
+}
+interface Props { items: Lens[] }
+const { items } = Astro.props;
+const roman = ['I', 'II', 'III', 'IV', 'V', 'VI'];
+---
+
+<section class="lenses" data-lenses aria-label="Two lenses: Rigveda and modern science">
+  <div class="lenses-head">
+    <p class="eyebrow">Two lenses</p>
+    <h2 class="lenses-title">The verse and the genome</h2>
+  </div>
+
+  <div class="lenses-body">
+    <div class="tabs" role="group" aria-label="Choose a verse">
+      {items.map((it, i) => (
+        <button type="button" class="tab" data-lens-btn aria-pressed={i === 0 ? 'true' : 'false'}>
+          <span class="tab-no">{roman[i]}</span>
+          <span class="tab-ref">{it.ref}</span>
+          <span class="tab-bar" aria-hidden="true"></span>
+        </button>
+      ))}
+    </div>
+
+    <div class="pairs" aria-live="polite">
+      {items.map((it, i) => (
+        <article class={`pair${i === 0 ? ' active' : ''}`} data-lens-pair>
+          <div class="side side-old">
+            <p class="side-label">Rigveda</p>
+            <p class="sanskrit" lang="sa">{it.sanskrit}</p>
+            <p class="translit" lang="sa-Latn">{it.translit}</p>
+            <p class="translation">{it.translation}</p>
+            <p class="ref">{it.ref}</p>
+          </div>
+
+          <div class="thread" aria-hidden="true">
+            <span class="thread-line"></span>
+            <span class="thread-dot"></span>
+          </div>
+
+          <div class="side side-new">
+            <p class="side-label">Modern science</p>
+            <h3 class="modern-title">{it.modernTitle}</h3>
+            <p class="modern">{it.modern}</p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+
+  <p class="lenses-note">Translations are simplified.</p>
+</section>
+
+<style>
+  .lenses {
+    margin-top: 3.5rem;
+    padding: 2.25rem 0 0.5rem;
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .lenses-title {
+    font-size: clamp(1.6rem, 4vw, 2.2rem);
+    margin: 0.6rem 0 2rem;
+  }
+
+  .lenses-body { display: grid; gap: 2rem; }
+
+  .tabs { display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; }
+
+  .tab {
+    position: relative;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    background: none;
+    border: 0;
+    padding: 0.6rem 0 0.7rem;
+    cursor: pointer;
+    color: var(--color-muted);
+    font: inherit;
+    transition: color 0.3s ease;
+  }
+  .tab:hover, .tab:focus-visible { color: var(--color-text); }
+  .tab[aria-pressed='true'] { color: var(--color-text); }
+
+  .tab-no { font-family: var(--font-display); font-style: italic; font-size: 1.05rem; color: var(--color-gold); }
+  .tab-ref { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; }
+
+  .tab-bar {
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 1px;
+    background: var(--color-rule);
+  }
+  .tab-bar::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--color-gold);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  .tab[aria-pressed='true'] .tab-bar::after { transform: scaleX(1); }
+  :global(.lenses-auto) .tab[aria-pressed='true'] .tab-bar::after {
+    animation: lens-fill var(--lens-ms, 11s) linear forwards;
+  }
+  @keyframes lens-fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+  /* panes */
+  .pair {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 0.5rem 0 1.5rem;
+  }
+  :global(.js) .pair { display: none; }
+  :global(.js) .pair.active { display: grid; animation: lens-in 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+  .pair + .pair { border-top: 1px solid var(--color-rule); padding-top: 2rem; }
+  :global(.js) .pair + .pair { border-top: 0; padding-top: 0.5rem; }
+
+  @keyframes lens-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+  .side-label {
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin: 0 0 1rem;
+  }
+
+  .sanskrit {
+    font-family: 'Noto Serif Devanagari', 'Kohinoor Devanagari', 'Devanagari Sangam MN', 'Nirmala UI', serif;
+    font-size: clamp(1.25rem, 3.2vw, 1.6rem);
+    line-height: 1.75;
+    color: var(--color-gold);
+    margin: 0 0 0.9rem;
+  }
+  .translit { font-style: italic; font-size: 0.92rem; line-height: 1.6; color: var(--color-muted); margin: 0 0 0.9rem; }
+  .translation { font-family: var(--font-display); font-style: italic; font-size: 1.15rem; line-height: 1.55; color: var(--color-text); margin: 0 0 0.9rem; }
+  .ref { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-muted); margin: 0; }
+
+  .modern-title { font-size: clamp(1.3rem, 3vw, 1.7rem); margin: 0 0 0.9rem; }
+  .modern { font-size: 1.02rem; line-height: 1.75; color: var(--color-text-secondary); margin: 0; }
+
+  /* the thread that joins the two sides */
+  .thread { position: relative; height: 3rem; }
+  .thread-line {
+    position: absolute;
+    left: 0; right: 0; top: 50%;
+    height: 1px;
+    background: linear-gradient(90deg, var(--color-gold), var(--color-accent));
+    opacity: 0.55;
+  }
+  .thread-dot {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 7px; height: 7px;
+    margin: -3px 0 0 -3px;
+    border-radius: 50%;
+    background: var(--color-gold);
+    box-shadow: 0 0 10px rgba(201, 166, 107, 0.7);
+    animation: lens-travel 4.5s ease-in-out infinite;
+  }
+  @keyframes lens-travel {
+    0%   { left: 0; background: var(--color-gold); }
+    50%  { left: 100%; background: var(--color-accent); }
+    100% { left: 0; background: var(--color-gold); }
+  }
+
+  .lenses-note {
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin: 0.5rem 0 0;
+    opacity: 0.8;
+  }
+
+  @media (min-width: 820px) {
+    .pair { grid-template-columns: 1fr 3.5rem 1fr; gap: 0; align-items: start; }
+    .thread { height: auto; align-self: stretch; min-height: 100%; }
+    .thread-line { left: 50%; right: auto; top: 0.5rem; bottom: 0.5rem; width: 1px; height: auto; background: linear-gradient(180deg, var(--color-gold), var(--color-accent)); }
+    .thread-dot { left: 50%; top: 0.5rem; margin: 0 0 0 -3px; animation-name: lens-travel-v; }
+    @keyframes lens-travel-v {
+      0%   { top: 0.5rem; background: var(--color-gold); }
+      50%  { top: calc(100% - 0.5rem); background: var(--color-accent); }
+      100% { top: 0.5rem; background: var(--color-gold); }
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .thread-dot { animation: none; opacity: 0.6; }
+    :global(.js) .pair.active { animation: none; }
+  }
+</style>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-lenses]');
+  if (root) {
+    const btns = [...root.querySelectorAll<HTMLButtonElement>('[data-lens-btn]')];
+    const pairs = [...root.querySelectorAll<HTMLElement>('[data-lens-pair]')];
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const MS = 11000;
+    root.style.setProperty('--lens-ms', MS + 'ms');
+    let cur = 0, timer = 0, stopped = reduce;
+
+    const show = (n: number) => {
+      cur = n;
+      btns.forEach((b, k) => b.setAttribute('aria-pressed', String(k === n)));
+      pairs.forEach((p, k) => p.classList.toggle('active', k === n));
+      schedule();
+    };
+    const schedule = () => {
+      clearTimeout(timer);
+      root.classList.remove('lenses-auto');
+      if (stopped) return;
+      void root.offsetWidth; // restart the progress line
+      root.classList.add('lenses-auto');
+      timer = window.setTimeout(() => show((cur + 1) % pairs.length), MS);
+    };
+
+    btns.forEach((b, i) => b.addEventListener('click', () => { stopped = true; show(i); }));
+    root.addEventListener('pointerenter', () => { clearTimeout(timer); root.classList.remove('lenses-auto'); });
+    root.addEventListener('pointerleave', () => schedule());
+    schedule();
+  }
+</script>

@@ -12,6 +12,7 @@ const essays = defineCollection({
     genes: z.boolean().default(false),
     flow: z.boolean().default(false),
     weave: z.boolean().default(false),
+    origin: z.boolean().default(false),
     lenses: z
       .array(
         z.object({

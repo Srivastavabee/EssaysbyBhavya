@@ -6,6 +6,7 @@ tags:
   - Biology
   - Humanism
 updated: 2026-11-02
+origin: true
 draft: false
 ---
 

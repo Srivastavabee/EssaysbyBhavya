@@ -105,12 +105,18 @@
     min-width: 6.5em;
     text-align: left;
     color: var(--color-gold);
-    transition: opacity 0.45s ease, transform 0.45s ease;
+    transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
   }
 
   :global(.cycler.out) {
     opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(-14px);
+  }
+
+  :global(.cycler.pre) {
+    transition: none;
+    opacity: 0;
+    transform: translateY(14px);
   }
 
   .subtitle-break { display: none; }
@@ -127,8 +133,6 @@
     .wordmark {
       animation: none;
     }
-    .cycler { transition: opacity 0.3s ease; }
-    :global(.cycler.out) { transform: none; }
   }
 </style>
 
@@ -142,8 +146,11 @@
       setTimeout(() => {
         i = (i + 1) % words.length;
         el.textContent = words[i];
+        el.classList.add('pre');
         el.classList.remove('out');
-      }, 450);
-    }, 2600);
+        void el.offsetWidth;
+        el.classList.remove('pre');
+      }, 900);
+    }, 3600);
   }
 </script>

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://essaysbybhavya.vercel.app/sitemap-index.xml
+Sitemap: https://essaysby-bhavya.vercel.app/sitemap-index.xml

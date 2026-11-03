@@ -17,7 +17,7 @@ How can this restlessness be transformed into something that brings peace to my 
 
 The learning curve my fate has put me through in these past 29 years, along with the old gods and the new ones, has given me so many stories to tell. As if that weren't enough, the cat inside me went out to learn more about other fields, which gave me even more to write about. Thankfully, curiosity did not kill that cat. It only made her more learned in the facts of life, and in how to do things by thirty, hopefully.
 
-So, starting today, I have decided to do more than write about the amalgamation of science, philosophy and literature. I will set up a personal, experiential experiment here: one essay a day, on a topic that comes to my mind at random.
+So, starting today, I have decided to do more than write about the amalgamation of science, philosophy and literature. I will set up a personal, experiential experiment here: one essay a day, on a topic that comes to my mind at random. It might be a life lesson, or a story I went through, told in a way that lets readers learn something of their own.
 
 Someone once told me at a TEDx session:
 

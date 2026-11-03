@@ -19,7 +19,7 @@ The learning curve my fate has put me through in these past 29 years, along with
 
 So, starting today, I have decided to do more than write about the amalgamation of science, philosophy and literature. I will set up a personal, experiential experiment here: one essay a day, on a topic that comes to my mind at random. It might be a life lesson, or a story I went through, told in a way that lets readers learn something of their own.
 
-Someone once told me at a TEDx session:
+At a TEDx talk back at my institution, I heard an eminent, learned man say:
 
 > *Kahani likhne se daro nahi. Likho. Agar achhi nahi lagi, toh badal dena, kyunki kahani **tumhari** hai.*  
 > Don't be afraid to write the story. Write it. If you don't like it, change it, because the story is yours.
